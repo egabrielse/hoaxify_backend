@@ -14,7 +14,7 @@ public class User {
 	@GeneratedValue // Data JPA - Auto generates unique id values for the key
 	private long id;
 	private String username;
-	private String email;
+	private String displayName;
 	private String password;
 
 }

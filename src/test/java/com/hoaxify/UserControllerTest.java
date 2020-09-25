@@ -32,7 +32,7 @@ public class UserControllerTest {
 		User user = new User();
 	
 		user.setUsername("test-user");
-		user.setEmail("test-email");
+		user.setDisplayName("test-displayName");
 		user.setPassword("test-password");
 		return user;
 	}
