@@ -215,7 +215,7 @@ public class UserControllerTest {
 		User user = createValidUser();
 		user.setUsername(null);
 		ResponseEntity<ApiError> response = postSignup(user, ApiError.class);
-		assertThat(response.getBody().getValidationErrors().get("username")).isEqualTo("must not be null");
+		assertThat(response.getBody().getValidationErrors().get("username")).isEqualTo("Username cannot be null.");
 	}
 	
 	@Test
@@ -223,7 +223,7 @@ public class UserControllerTest {
 		User user = createValidUser();
 		user.setDisplayName(null);
 		ResponseEntity<ApiError> response = postSignup(user, ApiError.class);
-		assertThat(response.getBody().getValidationErrors().get("displayName")).isEqualTo("must not be null");
+		assertThat(response.getBody().getValidationErrors().get("displayName")).isEqualTo("Display name cannot be null.");
 	}
 	
 	@Test
@@ -231,7 +231,7 @@ public class UserControllerTest {
 		User user = createValidUser();
 		user.setPassword(null);
 		ResponseEntity<ApiError> response = postSignup(user, ApiError.class);
-		assertThat(response.getBody().getValidationErrors().get("password")).isEqualTo("must not be null");
+		assertThat(response.getBody().getValidationErrors().get("password")).isEqualTo("Password cannot be null.");
 	}
 	
 	@Test
@@ -247,7 +247,39 @@ public class UserControllerTest {
 		userRepository.save(createValidUser());
 		User user = createValidUser();
 		ResponseEntity<ApiError> response = postSignup(user, ApiError.class);
-		assertThat(response.getBody().getValidationErrors().get("username")).isEqualTo("This username is in use");
+		assertThat(response.getBody().getValidationErrors().get("username")).isEqualTo("This username is in use.");
+	}
+	
+	@Test
+	public void postUser_whenUsernameHasInvalidLength_receiveGenericMessageOfSizeError () {
+		User user = createValidUser();
+		user.setUsername("asd");
+		ResponseEntity<ApiError> response = postSignup(user, ApiError.class);
+		assertThat(response.getBody().getValidationErrors().get("username")).isEqualTo("It must between 4 and 255 characters in length.");
+	}
+	
+	@Test
+	public void postUser_whenPasswordHasNoLowercaseCharacters_receiveMessageOfPasswordPatternError () {
+		User user = createValidUser();
+		user.setPassword("UPPER12345");
+		ResponseEntity<ApiError> response = postSignup(user, ApiError.class);
+		assertThat(response.getBody().getValidationErrors().get("password")).isEqualTo("Password must contain one of each: lowercase, uppercase, digit.");
+	}
+	
+	@Test
+	public void postUser_whenPasswordHasNoUppercaseCharacters_receiveMessageOfPasswordPatternError () {
+		User user = createValidUser();
+		user.setPassword("lower12345");
+		ResponseEntity<ApiError> response = postSignup(user, ApiError.class);
+		assertThat(response.getBody().getValidationErrors().get("password")).isEqualTo("Password must contain one of each: lowercase, uppercase, digit.");
+	}
+	
+	@Test
+	public void postUser_whenPasswordHasNoDigits_receiveMessageOfPasswordPatternError () {
+		User user = createValidUser();
+		user.setPassword("lowerUPPER");
+		ResponseEntity<ApiError> response = postSignup(user, ApiError.class);
+		assertThat(response.getBody().getValidationErrors().get("password")).isEqualTo("Password must contain one of each: lowercase, uppercase, digit.");
 	}
 
 }

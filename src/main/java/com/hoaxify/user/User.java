@@ -1,4 +1,4 @@
-package com.hoaxify.user;
+ package com.hoaxify.user;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,18 +21,18 @@ public class User {
 	private long id;
 	
 	
-	@NotNull
+	@NotNull(message = "{hoaxify.constraints.username.NotNull.message}")
 	@Size(min = 4, max = 255)
 	@UniqueUsername
 	private String username;
 	
-	@NotNull
+	@NotNull(message = "{hoaxify.constraints.displayName.NotNull.message}")
 	@Size(min = 4, max = 255)
 	private String displayName;
 	
-	@NotNull
+	@NotNull(message = "{hoaxify.constraints.password.NotNull.message}")
 	@Size(min = 8, max = 255)
-	@Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).*$") // one lower, one upper, one digit
+	@Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).*$", message = "{hoaxify.constraints.password.Pattern.message}") // one lower, one upper, one digit
 	private String password;
 
 }

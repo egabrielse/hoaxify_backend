@@ -12,7 +12,7 @@ import javax.validation.Payload;
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface UniqueUsername {
-	String message() default "This username is in use";
+	String message() default "This username is in use.";
 	
 	Class<?>[] groups() default {};
 	
